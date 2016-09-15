@@ -154,6 +154,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FileModel.cs" />
+    <Compile Include="Models\SpectrumStoreModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -969,6 +970,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Userscripts\Chart.js" />
     <Content Include="Scripts\Userscripts\main.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />

@@ -4,23 +4,47 @@
 }
 
 <form class="form-horizontal" name="form">
-    <div class="form-group">
-        <textarea name="txtarea" style="max-width: none" rows="10" cols="60" placeholder="Enter a text" ng-model="filetxt"></textarea>
-    </div>
     
-    <input id="id_fileloader" type="file" nv-file-select uploader="uploader">
-    <br />
-    @*<ul>
-        <li ng-repeat="item in uploader.queue">
-            Name: <span ng-bind="item.file.name"></span><br />
-            <button ng-click="item.upload()">upload</button>
-        </li>
-    </ul>*@
-
+    <!-- txt -->
     <div class="form-group">
-        <div class="btn btn-primary" ng-click="clear()"><span class="glyphicon glyphicon-trash"></span> Clear</div>
-        <div class="btn btn-primary" ng-click="upload()"><span class="glyphicon glyphicon-upload"></span> Upload</div>
-        <div class="btn btn-primary" ng-click="spectrum()"> Calculate</div>
+        <textarea name="txtarea" style="max-width: none" @*rows="10" cols="60"*@ placeholder="Enter a text" ng-model="filetxt"></textarea>
+    </div>
+
+    <input id="id_fileloader" type="file" nv-file-select uploader="uploader">
+    <br/>
+
+    <!-- Buttons -->
+    <div class="form-group">
+        <div class="btn btn-primary" ng-click="clear()"><span class="glyphicon glyphicon-trash"></span> Clear
+        </div>
+        <div class="btn btn-primary" ng-click="upload()"><span class="glyphicon glyphicon-upload"></span> Upload
+        </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" ng-click="spectrum()" data-toggle="modal" data-target=".bs-example-modal-lg">
+            <span class="glyphicon glyphicon-signal"></span> 
+            Spectrum
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Spectrum</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Chars : {{chars}}</p>
+                    <p>Letters : {{letters}}</p>
+
+                    <canvas id="chart" width="400" height="150"></canvas>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </form>

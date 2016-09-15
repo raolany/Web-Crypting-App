@@ -12,7 +12,7 @@ angular.module('EncryptApp', ['angularFileUpload'])
 
           var resp = JSON.parse(response);
           $scope.filetxt = resp.File;
-
+          $scope.fileName = resp.Name;
           uploader.clearQueue();
       }
 
@@ -25,54 +25,54 @@ angular.module('EncryptApp', ['angularFileUpload'])
           uploader.queue[0].upload();
       }
 
-      $scope.clear = function () {
+      $scope.clear = function() {
           uploader.clearQueue();
-          $("#id_fileloader").prop('value', null);
           $scope.filetxt = "";
       }
 
-      //$scope.spectrum = function () {
-      //    $http.post("/Home/Spectrum", { "txt": $scope.txt })
-      //    .then(function (response) {
-      //        $scope.spectrumStore = JSON.parse(response.data);
-      //        $scope.chars = $scope.spectrumStore.Chars;
-      //        $scope.letters = $scope.spectrumStore.Letters;
-      //        console.log($scope.spectrumStore.Alphabet);
+      $scope.spectrum = function () {
+          $http.post("/home/spectrum", { "filename": $scope.fileName})
+          .then(function (response) {
+              $scope.spectrumStore = JSON.parse(response.data);
+              $scope.chars = $scope.spectrumStore.CharsCount;
+              $scope.letters = $scope.spectrumStore.LettersCount;
 
-      //        var ctx = $("#chart");
-      //        var myBarChart = new Chart(ctx,
-      //        {
-      //            type: 'bar',
-      //            data: {
-      //                labels: $scope.spectrumStore.Alphabet,
-      //                datasets: [
-      //                    {
-      //                        label: "Spectrum Analises",
-      //                        borderWidth: 1,
-      //                        data: $scope.spectrumStore.Spectrum
-      //                    }
-      //                ]
-      //            },
-      //            options: {
-      //                scales: {
-      //                    xAxes: [
-      //                        {
-      //                            stacked: true
-      //                        }
-      //                    ],
-      //                    yAxes: [
-      //                        {
-      //                            stacked: true
-      //                        }
-      //                    ]
-      //                }
-      //            }
-      //        });
+              console.log($scope.spectrumStore.Alphabet);
 
-      //    }, function errorCallback(response) {
-      //        console.log("error");
-      //    });
-      //}
+              var ctx = $("#chart");
+              var myBarChart = new Chart(ctx,
+              {
+                  type: 'bar',
+                  data: {
+                      labels: $scope.spectrumStore.Alphabet,
+                      datasets: [
+                          {
+                              label: "Spectrum Analises",
+                              borderWidth: 1,
+                              data: $scope.spectrumStore.Spectrum
+                          }
+                      ]
+                  },
+                  options: {
+                      scales: {
+                          xAxes: [
+                              {
+                                  stacked: true
+                              }
+                          ],
+                          yAxes: [
+                              {
+                                  stacked: true
+                              }
+                          ]
+                      }
+                  }
+              });
+
+          }, function errorCallback(response) {
+              console.log("error");
+          });
+      }
   });
 
 

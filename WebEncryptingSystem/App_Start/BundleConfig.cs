@@ -30,7 +30,8 @@ namespace WebEncryptingSystem
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/userscripts").Include(
-                        "~/Scripts/Userscripts/main.js"));
+                        "~/Scripts/Userscripts/main.js",
+                        "~/Scripts/Userscripts/Chart.js"));
         }
     }
 }
