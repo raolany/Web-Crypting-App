@@ -63,11 +63,11 @@
     <div class="parametersAffine">
         <div class="form-group form-inline">
             <label>A : </label>
-            <input type="text" class="form-control" placeholder="Key a" ng-model="affineA">
+            <input id="affine_a"type="text" class="form-control" placeholder="Key a" ng-model="affineA" ng-change="checkAffineA()" onkeyup="return proverkaInt(this);">
         </div>
         <div class="form-group form-inline">
             <label>B : </label>
-            <input type="text" class="form-control" placeholder="Key b" ng-model="affineB">
+            <input id="affine_b" type="text" class="form-control" placeholder="Key b" ng-model="affineB" ng-change="checkAffineB()" onkeyup="return proverkaInt(this);">
         </div>
     </div>
     

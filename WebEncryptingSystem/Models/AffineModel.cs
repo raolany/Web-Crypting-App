@@ -44,7 +44,7 @@ namespace WebEncryptingSystem.Models
                 }
             }
 
-            var encpath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + "_affine_enc.txt";
+            var encpath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path).Split('_')[0] + "_affine_enc.txt";
             FileInfo outputFile = new FileInfo(encpath);
 
             using (StreamWriter sw = outputFile.CreateText())
@@ -90,15 +90,26 @@ namespace WebEncryptingSystem.Models
             };
         }
 
-        private byte EncryptedFormula(int x)
+        private int  EncryptedFormula(int x)
         {
-            return (byte) ((a*x + b) % m);
+            return (a*x + b) % m;
         }
 
-        private byte DecryptedFormula(int x)
+        private int  DecryptedFormula(int x)
         {
             int a_1 = inverse(a, m);
-            return (byte) ((a_1*(x - b))%m);
+            //var rez = (a_1 * (x - b)) % m;
+            //if (rez >= 0)
+            //    return rez;
+            //else
+            //{
+            //    var nrez = rez + m;
+            //    if (nrez == 0)
+            //    {
+
+            //    }
+            //}
+            return ((x-b) >= 0) ? (a_1 * (x - b)) % m : ((a_1 * (x - b)) % m + m)%m;
         }
 
         private void extended_euclid(int a, int b, out int x, out int y, out int d)
@@ -137,7 +148,7 @@ namespace WebEncryptingSystem.Models
 
             d = a;
             x = x2;
-            y = y2;
+            y = x1;
         }
 
 
@@ -147,7 +158,14 @@ namespace WebEncryptingSystem.Models
 
             extended_euclid(a, n, out x, out y, out d);
 
-            if (d == 1) return x;
+            if (d == 1)
+            {
+                if (x < 0)
+                {
+                    return x + y;
+                }
+                return x;
+            }
             return 0;
         }
     }

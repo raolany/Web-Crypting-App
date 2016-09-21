@@ -1,5 +1,6 @@
-﻿$(".parametersAffine").hide();
-$(".parametersBit").hide();
+﻿$(".parametersAffine,.parametersBit").hide();
+var m = 39;
+var MAXNUM = 999999;
 
 angular.module('EncryptApp', ['angularFileUpload'])
   .controller('AppController', function ($scope, $http, FileUploader) {
@@ -25,7 +26,7 @@ angular.module('EncryptApp', ['angularFileUpload'])
 
       $scope.upload = function () {
           if (uploader.queue.length > 0)
-              uploader.queue[0].upload();
+              uploader.queue[uploader.queue.length-1].upload();
           else
               alert("Choose a file");
       }
@@ -34,6 +35,11 @@ angular.module('EncryptApp', ['angularFileUpload'])
           uploader.clearQueue();
           $("#id_fileloader").prop('value', null);
           $scope.filetxt = "";
+          $scope.affineA = "";
+          $scope.affineB = "";
+          $scope.outputfilename = "";
+          $scope.outputtxt = "";
+          $scope.fileName = "";
       }
 
       $scope.spectrum = function () {
@@ -86,7 +92,15 @@ angular.module('EncryptApp', ['angularFileUpload'])
               $(".parametersBit").hide();
           }
           else if ($scope.selectMethod == 2) {
-              $(".parametersBit").show();
+              //$(".parametersBit").show();
+              $(".parametersAffine").hide();
+          }
+          else if ($scope.selectMethod == 3) {
+              //$(".parametersBit").show();
+              $(".parametersAffine").hide();
+          }
+          else if ($scope.selectMethod == 4) {
+              //$(".parametersBit").show();
               $(".parametersAffine").hide();
           }
       }
@@ -95,7 +109,17 @@ angular.module('EncryptApp', ['angularFileUpload'])
 
           if ($scope.selectMethod == 1) {
 
-              $http.post("/home/AffineFileCrypting", { "filename": $scope.fileName, "enc": true, "a": $scope.affineA, "b":$scope.affineB })
+              if ($("#affine_a").hasClass("alert-danger") || $("#affine_b").hasClass("alert-danger")) {
+                  alert("Correct errors");
+              }
+              else if ($scope.fileName === undefined || $scope.fileName === "") {
+                  alert("Choose a file");
+              }
+              else if ($scope.affineA === undefined || $scope.affineB === undefined || $scope.affineA === "" || $scope.affineB === "") {
+                  alert("Enter the keys");
+              }
+              else {
+                  $http.post("/home/AffineFileCrypting", { "filename": $scope.fileName, "enc": true, "a": $scope.affineA, "b": $scope.affineB })
                   .then(function (response) {
 
                       console.log("AffineFileCrypting", response.data);
@@ -107,6 +131,7 @@ angular.module('EncryptApp', ['angularFileUpload'])
                   }, function errorCallback(response) {
                       console.log("error", "/home/AffineFileCrypting:: filename: "+ $scope.fileName+",enc: "+ true+ ",a: "+ $scope.affineA+ ",b: "+$scope.affineB);
                   });
+              }
 
           } else {
               alert("Choose an encrytion method");
@@ -117,7 +142,17 @@ angular.module('EncryptApp', ['angularFileUpload'])
 
           if ($scope.selectMethod == 1) {
 
-              $http.post("/home/AffineFileCrypting", { "filename": $scope.fileName, "enc": false, "a": $scope.affineA, "b": $scope.affineB })
+              if ($("#affine_a").hasClass("alert-danger") || $("#affine_b").hasClass("alert-danger")) {
+                  alert("Correct errors");
+              }
+              else if ($scope.fileName === undefined || $scope.fileName === "") {
+                  alert("Choose a file");
+              }
+              else if ($scope.affineA === undefined || $scope.affineB === undefined || $scope.affineA === "" || $scope.affineB === "") {
+                  alert("Enter the keys");
+              }
+              else {
+                $http.post("/home/AffineFileCrypting", { "filename": $scope.fileName, "enc": false, "a": $scope.affineA, "b": $scope.affineB })
                   .then(function (response) {
 
                       console.log("AffineFileCrypting", response.data);
@@ -127,37 +162,86 @@ angular.module('EncryptApp', ['angularFileUpload'])
                       $scope.outputfilename = filemodel.Name;
 
                   }, function errorCallback(response) {
-                      console.log("error", "/home/AffineFileCrypting:: filename: " + $scope.fileName + ",enc: " + true + ",a: " + $scope.affineA + ",b: " + $scope.affineB);
+                        alert("{Error}-" + response.status+" "+response.statusText);
+                      console.log(response);
+                      console.log("error", "/home/AffineFileCrypting:: filename: " + $scope.fileName + ",enc: " + false + ",a: " + $scope.affineA + ",b: " + $scope.affineB);
                   });
+             }
 
           } else {
               alert("Choose an encrytion method");
           }
       }
 
-      //$scope.savefile = function () {
-      //
-      //    //if (angular.isDefined($scope.outputfileName)) {
-      //    alert($scope.outputfilename);
-      //    $http.post("/home/FileUploadOnPc", { "filename": $scope.outputfilename })
-      //            .then(function(response) {
-      //                    console.log(response.data);
-      //                },
-      //                function errorCallback(response) {
-      //                    console.log("error", "/home/AffineFileCrypting:: outputfilename: " + $scope.outputfileName);
-      //                });
-      //    //} else {
-      //    //    alert("{savefile} File not found");
-      //    //}
-      //}
+      $scope.checkAffineA = function () {
+          if ($scope.affineA === "") {
+              $("#affine_a").removeClass("alert-danger");
+              return;
+          }
+
+          var a = parseInt($scope.affineA);
+          if (!isNaN(a)) {
+              if (a > 999999) {
+                  $("#affine_a").addClass("alert-danger");
+                  return;
+              }
+
+              if (NOD_Evc(a, m) !== 1 || a === 1) {
+                  $("#affine_a").addClass("alert-danger");
+              } else {
+                  $("#affine_a").removeClass("alert-danger");
+              }
+          } 
+      }
+
+      $scope.checkAffineB = function () {
+          if ($scope.affineA === "") {
+              $("#affine_b").removeClass("alert-danger");
+              return;
+          }
+
+          var b = parseInt($scope.affineB);
+         
+            if (b > MAXNUM) {
+                $("#affine_b").addClass("alert-danger");
+            } else {
+                $("#affine_b").removeClass("alert-danger");
+            }
+      }
+
+      //$scope.$watch('affineA', function (newValue, oldValue) {
+      //    console.log('oldValue=' + oldValue);
+      //    console.log('newValue=' + newValue);
+      //});
 
   });
 
+function proverkaInt(input) {
+    input.value = input.value.replace(/[^\d,]/g, '');
+};
 
 
-//int gcd(int a, int b)
-//{
-//    while (b != 0)
-//b = a % (a = b);
-//return a;
-//}
+function NOD_Evc(a, b) {
+    var r = 1;
+    var q = 0;
+       
+    while (r != 0)
+    {
+        if (a >= b)
+        {
+            q = a/b;
+            r = a%b;
+            a = b;
+            b = r;
+        }
+        else
+        {
+            q = b/a;
+            r = b%a;
+            b = a;
+            a = r;
+        }
+    }
+    return Math.max(a,b);
+}
+
