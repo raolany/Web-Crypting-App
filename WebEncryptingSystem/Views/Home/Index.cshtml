@@ -4,29 +4,7 @@
 }
 
 <form class="form-horizontal" name="form">
-    
-    <!-- txt -->
-    <div class="form-group">
-        <textarea name="txtarea" style="max-width: none" @*rows="10" cols="60"*@ placeholder="Enter a text" ng-model="filetxt"></textarea>
-    </div>
-
-    <input id="id_fileloader" type="file" nv-file-select uploader="uploader">
-    <br/>
-
-    <!-- Buttons -->
-    <div class="form-group">
-        <div class="btn btn-primary" ng-click="clear()"><span class="glyphicon glyphicon-trash"></span> Clear
-        </div>
-        <div class="btn btn-primary" ng-click="upload()"><span class="glyphicon glyphicon-upload"></span> Upload
-        </div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" ng-click="spectrum()" data-toggle="modal" data-target=".bs-example-modal-lg">
-            <span class="glyphicon glyphicon-signal"></span> 
-            Spectrum
-        </button>
-    </div>
-
-    <!-- Modal -->
+    <!-- Modal Spectrum-->
     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -45,6 +23,88 @@
                 </div>
             </div>
         </div>
+    </div>
+    
+
+    <!-- txt -->
+    <div class="form-group">
+        <textarea name="txtarea" class="form-control" placeholder="Enter a text" ng-model="filetxt" readonly></textarea>
+    </div>
+    
+    <input id="id_fileloader" type="file" nv-file-select uploader="uploader">
+    <br/>
+
+    <!-- Buttons -->
+    <div class="form-group">
+        <div class="btn btn-primary" ng-click="clear()">
+            <span class="glyphicon glyphicon-trash"></span> Clear
+        </div>
+        <div class="btn btn-primary" ng-click="upload()">
+            <span class="glyphicon glyphicon-upload"></span> Upload
+        </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" ng-click="spectrum()" data-toggle="modal" data-target=".bs-example-modal-lg">
+            <span class="glyphicon glyphicon-signal"></span> 
+            Spectrum
+        </button>
+    </div>
+    
+    <div class="form-group">
+        <label for="selectMethod">Encryption method :</label>
+        <select id="selectMethod" class="form-control" ng-model="selectMethod" ng-change="changeMethod()">
+            <option selected value="1">Афинный метод</option>
+            <option value="2">Битовая перестановка</option>
+            <option value="3">Разовый шифр-ключ</option>
+            <option value="4">Метод Хилла</option>
+        </select> 
+    </div>
+    
+    <!-- Affine param -->
+    <div class="parametersAffine">
+        <div class="form-group form-inline">
+            <label>A : </label>
+            <input type="text" class="form-control" placeholder="Key a" ng-model="affineA">
+        </div>
+        <div class="form-group form-inline">
+            <label>B : </label>
+            <input type="text" class="form-control" placeholder="Key b" ng-model="affineB">
+        </div>
+    </div>
+    
+    <!-- Bit param -->
+    <div class="parametersBit">
+        <div class="form-group form-inline">
+            <label>As : </label>
+            <input type="text" class="form-control" placeholder="Key a">
+        </div>
+        <div class="form-group form-inline">
+            <label>B : </label>
+            <input type="text" class="form-control" placeholder="Key b">
+        </div>
+    </div>
+    
+    <!-- Crypting btns -->
+    <div class="form-group">
+        <div class="btn btn-primary" ng-click="encrypt()">
+            <span class="glyphicon glyphicon-eye-close"></span> Encrypt
+        </div>
+        <div class="btn btn-primary" ng-click="decrypt()">
+            <span class="glyphicon glyphicon-eye-open"></span> Decrypt
+        </div>
+    </div>
+    
+    <!-- Output txt -->
+    <div class="form-group">
+        <label>Name of file : </label><span ng-model="outputfilename">{{outputfilename}}</span>
+        <textarea class="form-control" placeholder="Output text" ng-model="outputtxt" readonly></textarea>
+    </div>
+    
+    <div class="form-group">
+        <a href="/Files/{{outputfilename}}" download>
+            <div class="btn btn-primary">
+                <span class="glyphicon glyphicon-floppy-disk"></span> Save file on disk
+            </div>
+        </a>
     </div>
 
 </form>

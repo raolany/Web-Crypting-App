@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
@@ -22,7 +23,7 @@ namespace WebEncryptingSystem.Controllers
             return View();
         }
 
-        public ActionResult FileUpload(HttpPostedFileBase file)
+        public ActionResult FileUploadOnServer(HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -44,21 +45,24 @@ namespace WebEncryptingSystem.Controllers
             return HttpNotFound("File not found");
         }
 
+        /*public void FileUploadOnPc(string filename)
+        {
+            //return RedirectToAction(Server.MapPath("~/Files/")+filename);
+            Response.ContentType = "APPLICATION/OCTET-STREAM";
+            String Header = "Attachment; Filename=XMLFile.xml";
+            Response.AppendHeader("Content-Disposition", Header);
+            System.IO.FileInfo Dfile = new System.IO.FileInfo(Server.MapPath("FileArchieve/Flowers/Flowers.png"));
+            Response.WriteFile(Dfile.FullName);
+            //Don't forget to add the following line
+            Response.End();
+        }*/
+
         public ActionResult Spectrum(string filename)
         {
             if (ModelState.IsValid)
             {
                 var path = Server.MapPath("~/Files/" + filename);
                 string txt = System.IO.File.ReadAllText(path);
-
-                //using (StreamReader sr = System.IO.File.OpenText(path))
-                //{
-                //    string s = "";
-                //    while ((s = sr.ReadLine()) != null)
-                //    {
-                //        txt += s;
-                //    }
-                //}
 
                 txt = txt.ToUpper().Replace("  ", string.Empty).Trim().Replace("\n", string.Empty).Replace("\t", string.Empty);
 
@@ -76,16 +80,6 @@ namespace WebEncryptingSystem.Controllers
                     }
                 }
 
-                //sort by keys
-                /*var list = spectrumStore.Alphabet;
-                list.Sort();
-
-                var spec = new List<int>();
-                foreach (var key in list)
-                {
-                    spec.Add(store[key]);
-                }
-                spectrumStore.Spectrum = spec;*/
                 spectrumStore.Spectrum = new List<int>(store.Values);
 
                 var json = JsonConvert.SerializeObject(spectrumStore);
@@ -93,6 +87,31 @@ namespace WebEncryptingSystem.Controllers
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
 
+            return HttpNotFound();
+        }
+
+        public ActionResult AffineFileCrypting(string filename, bool enc, int a, int b)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = Server.MapPath("~/Files/" + filename);
+                AffineModel affine = new AffineModel(a, b);
+                FileModel output = new FileModel();
+
+                //true =  encrypting
+                if (enc)
+                {
+                    output = affine.EncryptFile(path);
+                }
+                else
+                {
+                    output = affine.DecryptFile(path);
+                }
+
+                var json = JsonConvert.SerializeObject(output); ;
+
+                return Json(json, JsonRequestBehavior.AllowGet);
+            }
             return HttpNotFound();
         }
 
