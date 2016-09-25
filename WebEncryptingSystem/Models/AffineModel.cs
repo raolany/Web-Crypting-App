@@ -37,8 +37,6 @@ namespace WebEncryptingSystem.Models
             {
                 if (alphabet.Contains(txt[i]))
                 {
-                    //var code = EncryptedFormula(Encoding.ASCII.GetBytes(txt[i].ToString())[0]);
-                    //output.Append(Encoding.ASCII.GetString(new byte[] {code}));
                     var code = EncryptedFormula(alphabet.IndexOf(txt[i]));
                     output.Append(alphabet[code]);
                 }
@@ -68,8 +66,6 @@ namespace WebEncryptingSystem.Models
 
             for (int i = 0; i < txt.Length; i++)
             {
-                //var code = DecryptedFormula(Encoding.ASCII.GetBytes(txt[i].ToString())[0]);
-                //output.Append(Encoding.ASCII.GetString(new byte[] { code }));
                 var code = DecryptedFormula(alphabet.IndexOf(txt[i]));
                 output.Append(alphabet[code]);
             }
@@ -98,17 +94,6 @@ namespace WebEncryptingSystem.Models
         private int  DecryptedFormula(int x)
         {
             int a_1 = inverse(a, m);
-            //var rez = (a_1 * (x - b)) % m;
-            //if (rez >= 0)
-            //    return rez;
-            //else
-            //{
-            //    var nrez = rez + m;
-            //    if (nrez == 0)
-            //    {
-
-            //    }
-            //}
             return ((x-b) >= 0) ? (a_1 * (x - b)) % m : ((a_1 * (x - b)) % m + m)%m;
         }
 
@@ -150,8 +135,7 @@ namespace WebEncryptingSystem.Models
             x = x2;
             y = x1;
         }
-
-
+        
         private int inverse(int a, int n)
         {
             int d, x, y;

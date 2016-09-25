@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,6 @@ namespace WebEncryptingSystem.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
             return View();
         }
 
@@ -107,6 +107,24 @@ namespace WebEncryptingSystem.Controllers
                 {
                     output = affine.DecryptFile(path);
                 }
+
+                var json = JsonConvert.SerializeObject(output); ;
+
+                return Json(json, JsonRequestBehavior.AllowGet);
+            }
+            return HttpNotFound();
+        }
+
+        public ActionResult BitFileCrypting(string filename, int a, int b, bool act)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = Server.MapPath("~/Files/" + filename);
+                BitModel bit = new BitModel(a, b);
+
+                Debug.WriteLine("The path is " + path);
+
+                var output = bit.Crypting(path, act);
 
                 var json = JsonConvert.SerializeObject(output); ;
 

@@ -92,16 +92,16 @@ angular.module('EncryptApp', ['angularFileUpload'])
               $(".parametersBit").hide();
           }
           else if ($scope.selectMethod == 2) {
-              //$(".parametersBit").show();
+              $(".parametersBit").show();
               $(".parametersAffine").hide();
           }
           else if ($scope.selectMethod == 3) {
               //$(".parametersBit").show();
-              $(".parametersAffine").hide();
+              $(".parametersAffine, .parametersBit").hide();
           }
           else if ($scope.selectMethod == 4) {
               //$(".parametersBit").show();
-              $(".parametersAffine").hide();
+              $(".parametersAffine, .parametersBit").hide();
           }
       }
 
@@ -133,7 +133,35 @@ angular.module('EncryptApp', ['angularFileUpload'])
                   });
               }
 
-          } else {
+          }
+          else if ($scope.selectMethod == 2) {
+
+              if ($("#bit1").hasClass("alert-danger") || $("#bit2").hasClass("alert-danger")) {
+                  alert("Correct errors");
+              }
+              else if ($scope.fileName === undefined || $scope.fileName === "") {
+                  alert("Choose a file");
+              }
+              else if ($scope.bit1 === undefined || $scope.bit2 === undefined || $scope.bit1 === "" || $scope.bit2 === "") {
+                  alert("Enter the keys");
+              }
+              else {
+                  $http.post("/home/BitFileCrypting", { "filename": $scope.fileName, "a": $scope.bit1, "b": $scope.bit2, "act": true })
+                  .then(function (response) {
+
+                      console.log("BitFileCrypting", response.data);
+
+                      var filemodel = JSON.parse(response.data);
+                      $scope.outputtxt = filemodel.File;
+                      $scope.outputfilename = filemodel.Name;
+
+                  }, function errorCallback(response) {
+                      console.log("error", "/home/BitFileCrypting:: filename: " + $scope.fileName + ",enc: " + true + ",a: " + $scope.bit1 + ",b: " + $scope.bit2);
+                  });
+              }
+
+          }
+          else {
               alert("Choose an encrytion method");
           }
       }
@@ -168,7 +196,35 @@ angular.module('EncryptApp', ['angularFileUpload'])
                   });
              }
 
-          } else {
+          }
+          else if ($scope.selectMethod == 2) {
+
+              if ($("#bit1").hasClass("alert-danger") || $("#bit2").hasClass("alert-danger")) {
+                  alert("Correct errors");
+              }
+              else if ($scope.fileName === undefined || $scope.fileName === "") {
+                  alert("Choose a file");
+              }
+              else if ($scope.bit1 === undefined || $scope.bit2 === undefined || $scope.bit1 === "" || $scope.bit2 === "") {
+                  alert("Enter the keys");
+              }
+              else {
+                  $http.post("/home/BitFileCrypting", { "filename": $scope.fileName, "act": false, "a": $scope.bit1, "b": $scope.bit2 })
+                  .then(function (response) {
+
+                      console.log("BitFileCrypting", response.data);
+
+                      var filemodel = JSON.parse(response.data);
+                      $scope.outputtxt = filemodel.File;
+                      $scope.outputfilename = filemodel.Name;
+
+                  }, function errorCallback(response) {
+                      console.log("error", "/home/BitFileCrypting:: filename: " + $scope.fileName + ",act: " + false + ",a: " + $scope.bit1 + ",b: " + $scope.bit2);
+                  });
+              }
+
+          }
+          else {
               alert("Choose an encrytion method");
           }
       }
@@ -209,10 +265,29 @@ angular.module('EncryptApp', ['angularFileUpload'])
             }
       }
 
-      //$scope.$watch('affineA', function (newValue, oldValue) {
-      //    console.log('oldValue=' + oldValue);
-      //    console.log('newValue=' + newValue);
-      //});
+      $scope.checBit = function () {
+          if ($scope.bit1 === "" || $scope.bit1 === "undefined") {
+              $("#bit1").removeClass("alert-danger");
+          }
+          if ($scope.bit2 === "" || $scope.bit2 === "undefined") {
+              $("#bit2").removeClass("alert-danger");
+          }
+
+          var bit1 = parseInt($scope.bit1);
+          var bit2 = parseInt($scope.bit2);
+
+            if (bit1 > 7) {
+                $("#bit1").addClass("alert-danger");
+            } else {
+                $("#bit1").removeClass("alert-danger");
+            }
+
+          if (bit2 > 7) {
+              $("#bit2").addClass("alert-danger");
+          } else {
+              $("#bit2").removeClass("alert-danger");
+          }
+      }
 
   });
 

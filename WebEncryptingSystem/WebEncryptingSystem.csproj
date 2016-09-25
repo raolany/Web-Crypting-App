@@ -154,6 +154,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AffineModel.cs" />
+    <Compile Include="Models\BitModel.cs" />
     <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\LabsModel.cs" />
     <Compile Include="Models\SpectrumStoreModel.cs" />

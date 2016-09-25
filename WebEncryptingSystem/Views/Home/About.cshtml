@@ -1,7 +1,27 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Documentation";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<h2>@ViewBag.Title</h2>
 
-<p>Use this area to provide additional information.</p>
+<h3>1. Афінний метод шифрування</h3>
+<p class="lead">1.1 Функції шифрування і розшифрування</p>
+
+<p>
+    Функція шифрування :
+    <blockquote>
+        <p>E(x) = (a*x + b) mod m</p>
+        <footer>
+            <var>a</var>,<var>b</var> - ключі, <var>x</var> - код зашифрованого символу, <var>m</var> - кількість літер в алфавіті
+</footer>
+    </blockquote>
+</p>
+
+<p>
+    Функція розшифрування :
+    <blockquote>
+        <p>D(x) = a<sup>-1</sup>(x - b) mod m</p>
+        <footer>
+            <var>a<sup>-1</sup></var> - оберенена до a число по модулю m, <var>b</var> - ключ, <var>x</var> - код зашифрованого символу, <var>m</var> - кількість літер в алфавіті
+</footer>
+    </blockquote>
+</p>
