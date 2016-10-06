@@ -83,6 +83,17 @@
         </div>
     </div>
     
+    <div class="parametersHill">
+        <div class="form-group form-inline">
+            <label>Key (2x2): </label><br />
+            <input id="hill01" type="text" class="form-control"  ng-model="hill01"  onkeyup="return proverkaInt(this);">
+            <input id="hill02" type="text" class="form-control" ng-model="hill02" onkeyup="return proverkaInt(this);">
+            <br/>
+            <input id="hill03" type="text" class="form-control" ng-model="hill03" onkeyup="return proverkaInt(this);">
+            <input id="hill04" type="text" class="form-control" ng-model="hill04" onkeyup="return proverkaInt(this);">
+        </div>
+    </div>
+    
     <!-- Crypting btns -->
     <div class="form-group">
         <div class="btn btn-primary" ng-click="encrypt()">

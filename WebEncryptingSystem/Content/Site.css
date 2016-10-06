@@ -32,3 +32,7 @@ select, input {
         width: 80%;
     }
 }
+
+.parametersHill input {
+    max-width: 60px;
+}

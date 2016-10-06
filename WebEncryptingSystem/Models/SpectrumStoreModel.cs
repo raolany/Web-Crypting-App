@@ -44,6 +44,8 @@ namespace WebEncryptingSystem.Models
             Alphabet.Add('.');
             Alphabet.Add(' ');
             Alphabet.Add(',');
+            Alphabet.Add('-');
+            Alphabet.Add('!');
         }
     }
 }

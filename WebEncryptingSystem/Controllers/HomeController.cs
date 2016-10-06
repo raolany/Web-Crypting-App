@@ -133,5 +133,20 @@ namespace WebEncryptingSystem.Controllers
             return HttpNotFound();
         }
 
+        public ActionResult HillFileCrypting(string filename, bool act, int[] key)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = Server.MapPath("~/Files/" + filename);
+                var hill = new HillModel(new [,]{{key[0], key[1]}, { key[2], key[3]}});
+
+                var output = hill.CryptFile(path, act);
+
+                var json = JsonConvert.SerializeObject(output); ;
+
+                return Json(json, JsonRequestBehavior.AllowGet);
+            }
+            return HttpNotFound();
+        }
     }
 }

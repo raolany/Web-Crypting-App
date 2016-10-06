@@ -1,4 +1,4 @@
-﻿$(".parametersAffine,.parametersBit").hide();
+﻿$(".parametersAffine, .parametersBit, .parametersHill").hide();
 var m = 39;
 var MAXNUM = 999999;
 
@@ -89,18 +89,17 @@ angular.module('EncryptApp', ['angularFileUpload'])
       $scope.changeMethod = function () {
           if ($scope.selectMethod == 1) {
               $(".parametersAffine").show();
-              $(".parametersBit").hide();
+              $(".parametersBit, .parametersHill").hide();
           }
           else if ($scope.selectMethod == 2) {
               $(".parametersBit").show();
-              $(".parametersAffine").hide();
+              $(".parametersAffine, .parametersHill").hide();
           }
           else if ($scope.selectMethod == 3) {
-              //$(".parametersBit").show();
-              $(".parametersAffine, .parametersBit").hide();
+              $(".parametersAffine, .parametersBit, .parametersHill").hide();
           }
           else if ($scope.selectMethod == 4) {
-              //$(".parametersBit").show();
+              $(".parametersHill").show();
               $(".parametersAffine, .parametersBit").hide();
           }
       }
@@ -157,6 +156,37 @@ angular.module('EncryptApp', ['angularFileUpload'])
 
                   }, function errorCallback(response) {
                       console.log("error", "/home/BitFileCrypting:: filename: " + $scope.fileName + ",enc: " + true + ",a: " + $scope.bit1 + ",b: " + $scope.bit2);
+                  });
+              }
+
+          }
+          else if ($scope.selectMethod == 4) {
+
+              if ($("#hill01").hasClass("alert-danger") || $("#hill02").hasClass("alert-danger") || $("#hill03").hasClass("alert-danger") || $("#hill04").hasClass("alert-danger")) {
+                  alert("Correct errors");
+              }
+              else if ($scope.fileName === undefined || $scope.fileName === "") {
+                  alert("Choose a file");
+              }
+              else if ($scope.hill01 === undefined || $scope.hill02 === undefined || $scope.hill03 === undefined || $scope.hill04 === undefined ||
+                        $scope.hill01 === "" || $scope.hill02 === "" || $scope.hill03 === "" || $scope.hill04 === "") {
+                  alert("Enter the keys");
+              }
+              else {
+                  var key = [$scope.hill01, $scope.hill02, $scope.hill03, $scope.hill04];
+                  console.log(key);
+                  
+                  $http.post("/home/HillFileCrypting", { "filename": $scope.fileName, "act": true , "key": key })
+                  .then(function (response) {
+
+                      console.log("HillFileCrypting", response.data);
+
+                      var filemodel = JSON.parse(response.data);
+                      $scope.outputtxt = filemodel.File;
+                      $scope.outputfilename = filemodel.Name;
+
+                  }, function errorCallback(response) {
+                      console.log("error", "/home/HillFileCrypting:: filename: " + $scope.fileName + ",act: " + true + ",key: "+ key);
                   });
               }
 
@@ -220,6 +250,36 @@ angular.module('EncryptApp', ['angularFileUpload'])
 
                   }, function errorCallback(response) {
                       console.log("error", "/home/BitFileCrypting:: filename: " + $scope.fileName + ",act: " + false + ",a: " + $scope.bit1 + ",b: " + $scope.bit2);
+                  });
+              }
+
+          }
+          else if ($scope.selectMethod == 4) {
+
+              if ($("#hill01").hasClass("alert-danger") || $("#hill02").hasClass("alert-danger") || $("#hill03").hasClass("alert-danger") || $("#hill04").hasClass("alert-danger")) {
+                  alert("Correct errors");
+              }
+              else if ($scope.fileName === undefined || $scope.fileName === "") {
+                  alert("Choose a file");
+              }
+              else if ($scope.hill01 === undefined || $scope.hill02 === undefined || $scope.hill03 === undefined || $scope.hill04 === undefined ||
+                        $scope.hill01 === "" || $scope.hill02 === "" || $scope.hill03 === "" || $scope.hill04 === "") {
+                  alert("Enter the keys");
+              }
+              else {
+                  var key = [$scope.hill01, $scope.hill02, $scope.hill03, $scope.hill04];
+
+                  $http.post("/home/HillFileCrypting", { "filename": $scope.fileName, "act": false, "key": key })
+                  .then(function (response) {
+
+                      console.log("HillFileCrypting", response.data);
+
+                      var filemodel = JSON.parse(response.data);
+                      $scope.outputtxt = filemodel.File;
+                      $scope.outputfilename = filemodel.Name;
+
+                  }, function errorCallback(response) {
+                      console.log("error", "/home/HillFileCrypting:: filename: " + $scope.fileName + ",act: " + false + ",key: " + key);
                   });
               }
 

@@ -156,7 +156,7 @@
     <Compile Include="Models\AffineModel.cs" />
     <Compile Include="Models\BitModel.cs" />
     <Compile Include="Models\FileModel.cs" />
-    <Compile Include="Models\LabsModel.cs" />
+    <Compile Include="Models\HillModel.cs" />
     <Compile Include="Models\SpectrumStoreModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
