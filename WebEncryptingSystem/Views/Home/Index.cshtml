@@ -54,7 +54,7 @@
         <select id="selectMethod" class="form-control" ng-model="selectMethod" ng-change="changeMethod()">
             <option selected value="1">Афинный метод</option>
             <option value="2">Битовая перестановка</option>
-            <option value="3">Разовый шифр-ключ</option>
+            <option value="3">Шифр Виженера</option>
             <option value="4">Метод Хилла</option>
         </select> 
     </div>
@@ -83,6 +83,15 @@
         </div>
     </div>
     
+    <!-- Vigenere param -->
+    <div class="parametersVigenere">
+        <div class="form-group form-inline">
+            <label>Key : </label>
+            <input id="vigenereKey" type="text" class="form-control" placeholder="key" ng-model="vigenereKey">
+        </div>
+    </div>
+    
+    <!-- Hill param -->
     <div class="parametersHill">
         <div class="form-group form-inline">
             <label>Key (2x2): </label><br />

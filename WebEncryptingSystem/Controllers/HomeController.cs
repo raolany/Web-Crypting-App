@@ -133,6 +133,25 @@ namespace WebEncryptingSystem.Controllers
             return HttpNotFound();
         }
 
+        public ActionResult VigenereFileCrypting(string filename, bool act, string key)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = Server.MapPath("~/Files/" + filename);
+                var vigenere = new VigenereModel(key.ToUpper().Trim());
+
+                if (!vigenere.VerifyKey())
+                    return new HttpStatusCodeResult(400, "Wrong Key: symbols in key are incorrect");
+
+                var output = vigenere.Crypting(path, act);
+
+                var json = JsonConvert.SerializeObject(output); ;
+
+                return Json(json, JsonRequestBehavior.AllowGet);
+            }
+            return HttpNotFound();
+        }
+
         public ActionResult HillFileCrypting(string filename, bool act, int[] key)
         {
             if (ModelState.IsValid)

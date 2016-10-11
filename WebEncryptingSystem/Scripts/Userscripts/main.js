@@ -1,5 +1,5 @@
-﻿$(".parametersAffine, .parametersBit, .parametersHill").hide();
-var m = 39;
+﻿$(".parametersAffine, .parametersBit, .parametersHill, .parametersVigenere").hide();
+var m = 41;
 var MAXNUM = 999999;
 
 angular.module('EncryptApp', ['angularFileUpload'])
@@ -89,18 +89,19 @@ angular.module('EncryptApp', ['angularFileUpload'])
       $scope.changeMethod = function () {
           if ($scope.selectMethod == 1) {
               $(".parametersAffine").show();
-              $(".parametersBit, .parametersHill").hide();
+              $(".parametersBit, .parametersHill, .parametersVigenere").hide();
           }
           else if ($scope.selectMethod == 2) {
               $(".parametersBit").show();
-              $(".parametersAffine, .parametersHill").hide();
+              $(".parametersAffine, .parametersHill, .parametersVigenere").hide();
           }
           else if ($scope.selectMethod == 3) {
+              $(".parametersVigenere").show();
               $(".parametersAffine, .parametersBit, .parametersHill").hide();
           }
           else if ($scope.selectMethod == 4) {
               $(".parametersHill").show();
-              $(".parametersAffine, .parametersBit").hide();
+              $(".parametersAffine, .parametersBit, .parametersVigenere").hide();
           }
       }
 
@@ -156,6 +157,33 @@ angular.module('EncryptApp', ['angularFileUpload'])
 
                   }, function errorCallback(response) {
                       console.log("error", "/home/BitFileCrypting:: filename: " + $scope.fileName + ",enc: " + true + ",a: " + $scope.bit1 + ",b: " + $scope.bit2);
+                  });
+              }
+
+          }
+          else if ($scope.selectMethod == 3) {
+
+              if ($("#vigenereKey").hasClass("alert-danger")) {
+                  alert("Correct errors");
+              }
+              else if ($scope.fileName === undefined || $scope.fileName === "") {
+                  alert("Choose a file");
+              }
+              else if ($scope.vigenereKey === undefined || $scope.vigenereKey === "") {
+                  alert("Enter the key");
+              }
+              else {
+                  $http.post("/home/VigenereFileCrypting", { "filename": $scope.fileName, "act": true, "key": $scope.vigenereKey })
+                  .then(function (response) {
+
+                      console.log("VigenereFileCrypting", response.data);
+
+                      var filemodel = JSON.parse(response.data);
+                      $scope.outputtxt = filemodel.File;
+                      $scope.outputfilename = filemodel.Name;
+
+                  }, function errorCallback(response) {
+                      console.log("error", "/home/VigenereFileCrypting:: filename: " + $scope.fileName + ",enc: " + true + ",key: " + $scope.vigenereKey);
                   });
               }
 
@@ -250,6 +278,33 @@ angular.module('EncryptApp', ['angularFileUpload'])
 
                   }, function errorCallback(response) {
                       console.log("error", "/home/BitFileCrypting:: filename: " + $scope.fileName + ",act: " + false + ",a: " + $scope.bit1 + ",b: " + $scope.bit2);
+                  });
+              }
+
+          }
+          else if ($scope.selectMethod == 3) {
+
+              if ($("#vigenereKey").hasClass("alert-danger")) {
+                  alert("Correct errors");
+              }
+              else if ($scope.fileName === undefined || $scope.fileName === "") {
+                  alert("Choose a file");
+              }
+              else if ($scope.vigenereKey === undefined || $scope.vigenereKey === "") {
+                  alert("Enter the key");
+              }
+              else {
+                  $http.post("/home/VigenereFileCrypting", { "filename": $scope.fileName, "act": false, "key": $scope.vigenereKey })
+                  .then(function (response) {
+
+                      console.log("VigenereFileCrypting", response.data);
+
+                      var filemodel = JSON.parse(response.data);
+                      $scope.outputtxt = filemodel.File;
+                      $scope.outputfilename = filemodel.Name;
+
+                  }, function errorCallback(response) {
+                      console.log("error", "/home/VigenereFileCrypting:: filename: " + $scope.fileName + ",enc: " + false + ",key: " + $scope.vigenereKey);
                   });
               }
 
