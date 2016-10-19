@@ -36,3 +36,7 @@ select, input {
 .parametersHill input {
     max-width: 60px;
 }
+
+.parametersRSA input {
+    max-width: 100px;
+}

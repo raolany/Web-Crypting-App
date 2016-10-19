@@ -1,4 +1,4 @@
-﻿$(".parametersAffine, .parametersBit, .parametersHill, .parametersVigenere").hide();
+﻿$(".parametersAffine, .parametersBit, .parametersHill, .parametersVigenere, .parametersRSA").hide();
 var m = 41;
 var MAXNUM = 999999;
 
@@ -91,19 +91,23 @@ angular.module('EncryptApp', ['angularFileUpload'])
       $scope.changeMethod = function () {
           if ($scope.selectMethod == 1) {
               $(".parametersAffine").show();
-              $(".parametersBit, .parametersHill, .parametersVigenere").hide();
+              $(".parametersBit, .parametersHill, .parametersVigenere, .parametersRSA").hide();
           }
           else if ($scope.selectMethod == 2) {
               $(".parametersBit").show();
-              $(".parametersAffine, .parametersHill, .parametersVigenere").hide();
+              $(".parametersAffine, .parametersHill, .parametersVigenere, .parametersRSA").hide();
           }
           else if ($scope.selectMethod == 3) {
               $(".parametersVigenere").show();
-              $(".parametersAffine, .parametersBit, .parametersHill").hide();
+              $(".parametersAffine, .parametersBit, .parametersHill, .parametersRSA").hide();
           }
           else if ($scope.selectMethod == 4) {
               $(".parametersHill").show();
-              $(".parametersAffine, .parametersBit, .parametersVigenere").hide();
+              $(".parametersAffine, .parametersBit, .parametersVigenere, .parametersRSA").hide();
+          }
+          else if ($scope.selectMethod == 5) {
+              $(".parametersRSA").show();
+              $(".parametersAffine, .parametersBit, .parametersVigenere, .parametersHill").hide();
           }
       }
 
@@ -217,6 +221,37 @@ angular.module('EncryptApp', ['angularFileUpload'])
 
                   }, function errorCallback(response) {
                       console.log("error", "/home/HillFileCrypting:: filename: " + $scope.fileName + ",act: " + true + ",key: "+ key);
+                  });
+              }
+
+          }
+          else if ($scope.selectMethod == 5) {
+
+              if ($("#rsaE").hasClass("alert-danger") || $("#rsaN").hasClass("alert-danger")) {
+                  alert("Correct errors");
+              }
+              else if ($scope.fileName === undefined || $scope.fileName === "") {
+                  alert("Choose a file");
+              }
+              else if ($scope.rsaE === undefined || $scope.rsaN === undefined ||
+                        $scope.rsaE === "" || $scope.rsaN === "") {
+                  alert("Enter the keys");
+              }
+              else {
+                  var key = [$scope.rsaE, 0, $scope.rsaN];
+                  console.log(key);
+
+                  $http.post("/home/RSAFileCrypting", { "filename": $scope.fileName, "act": true, "key": key })
+                  .then(function (response) {
+
+                      console.log("RSAFileCrypting", response.data);
+
+                      var filemodel = JSON.parse(response.data);
+                      $scope.outputtxt = filemodel.File;
+                      $scope.outputfilename = filemodel.Name;
+
+                  }, function errorCallback(response) {
+                      console.log("error", "/home/RSAFileCrypting:: filename: " + $scope.fileName + ",act: " + true + ",key: " + key);
                   });
               }
 
@@ -341,6 +376,36 @@ angular.module('EncryptApp', ['angularFileUpload'])
               }
 
           }
+          else if ($scope.selectMethod == 5) {
+
+              if ($("#rsaD").hasClass("alert-danger") || $("#rsaN").hasClass("alert-danger")) {
+                  alert("Correct errors");
+              }
+              else if ($scope.fileName === undefined || $scope.fileName === "") {
+                  alert("Choose a file");
+              }
+              else if ($scope.rsaD === undefined || $scope.rsaN === undefined ||
+                        $scope.rsaD === "" || $scope.rsaN === "") {
+                  alert("Enter the keys");
+              }
+              else {
+                  var key = [0, $scope.rsaD, $scope.rsaN];
+
+                  $http.post("/home/RSAFileCrypting", { "filename": $scope.fileName, "act": false, "key": key })
+                  .then(function (response) {
+
+                      console.log("RSAFileCrypting", response.data);
+
+                      var filemodel = JSON.parse(response.data);
+                      $scope.outputtxt = filemodel.File;
+                      $scope.outputfilename = filemodel.Name;
+
+                  }, function errorCallback(response) {
+                      console.log("error", "/home/RSAFileCrypting:: filename: " + $scope.fileName + ",act: " + false + ",key: " + key);
+                  });
+              }
+
+          }
           else {
               alert("Choose an encrytion method");
           }
@@ -406,6 +471,35 @@ angular.module('EncryptApp', ['angularFileUpload'])
           }
       }
 
+      $scope.sessionKey = function () {
+
+          if ($scope.rsaP == "" || $scope.rsaP == undefined) {
+              $scope.rsaP = randomSimple(1000);
+          }
+
+          if ($scope.rsaQ == "" || $scope.rsaQ == undefined) {
+              $scope.rsaQ = randomSimple(1000);
+          }
+
+          $http.post("/home/RSAGenerateSessionKey", { p: $scope.rsaP, q: $scope.rsaQ })
+          .then(function (response) {
+
+              console.log("", response.data);
+              var data = JSON.parse(response.data);
+              $scope.rsaE = data[0];
+              $scope.rsaD = data[1];
+              $scope.rsaN = data[2];
+
+              }, function errorCallback(response) {
+              console.log("error", "/home/RSAGenerateSessionKey: "+response);
+          });
+      }
+
+      $scope.clearSessionKey = function() {
+          $scope.rsaQ = "";
+          $scope.rsaP = "";
+      }
+
   });
 
 function proverkaInt(input) {
@@ -436,4 +530,32 @@ function NOD_Evc(a, b) {
     }
     return Math.max(a,b);
 }
+
+function randomSimple(n) {
+    var arr = [2];
+    var i = 3;
+    while (i < n) {
+
+        var flag = true;
+        for (var j = 0; j < arr.length; j++) {
+            if (i % arr[j] === 0) {
+                flag = false;
+            }
+        }
+
+        if (flag) arr.push(i);
+
+        i++;
+    }
+    //console.log(arr);
+
+    var rand = getRandomInt(2, arr.length);
+    return arr[rand];
+}
+
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 

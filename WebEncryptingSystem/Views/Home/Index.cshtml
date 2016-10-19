@@ -71,6 +71,7 @@
             <option value="2">Битовая перестановка</option>
             <option value="3">Шифр Виженера</option>
             <option value="4">Метод Хилла</option>
+            <option value="5">Метод RSA</option>
         </select> 
     </div>
     
@@ -115,6 +116,25 @@
             <br/>
             <input id="hill03" type="text" class="form-control" ng-model="hill03" onkeyup="return proverkaInt(this);">
             <input id="hill04" type="text" class="form-control" ng-model="hill04" onkeyup="return proverkaInt(this);">
+        </div>
+    </div>
+    
+    <!-- RSA param -->
+    <div class="parametersRSA">
+        <div class="form-group form-inline">
+            <label>Session key: </label> <br />
+            <input id="rsaP" type="text" class="form-control" ng-model="rsaP" placeholder="p" onkeyup="return proverkaInt(this);">
+            <input id="rsaQ" type="text" class="form-control" ng-model="rsaQ" placeholder="q" onkeyup="return proverkaInt(this);">
+            <button class="btn btn-primary" ng-click="sessionKey()">Generate</button>
+            <button class="btn btn-primary" ng-click="clearSessionKey()">Clear key</button><br />
+            
+            <label>Public key: </label> <br />
+            <input id="rsaE" type="text" class="form-control" ng-model="rsaE" placeholder="e" onkeyup="return proverkaInt(this);">
+            <input id="rsaN" type="text" class="form-control" ng-model="rsaN" placeholder="n" onkeyup="return proverkaInt(this);">
+            <br />
+            <label>Private key: </label> <br />
+            <input id="rsaD" type="text" class="form-control" ng-model="rsaD" placeholder="d" onkeyup="return proverkaInt(this);">
+            <input id="rsaN" type="text" class="form-control" ng-model="rsaN" placeholder="n" onkeyup="return proverkaInt(this);">
         </div>
     </div>
     

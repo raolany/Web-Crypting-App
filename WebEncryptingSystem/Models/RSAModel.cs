@@ -93,13 +93,13 @@ namespace WebEncryptingSystem.Models
 
             StringBuilder output = new StringBuilder();
 
-            for (int i = 0; i < nums.Length; i++)
+            for (int i = 0; i < nums.Length-1; i++)
             {
                 var code = DecryptedFormula(int.Parse(nums[i]));
                 output.Append(alphabet[code]);
             }
 
-            var encpath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path).Split('_')[0] + "_rsa_enc.txt";
+            var encpath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path).Split('_')[0] + "_rsa_dec.txt";
             FileInfo outputFile = new FileInfo(encpath);
 
             using (StreamWriter sw = outputFile.CreateText())
@@ -159,7 +159,7 @@ namespace WebEncryptingSystem.Models
                 y1 = y;
             }
 
-            d = a;
+            d = a;  
             x = x2;
             y = x1;
         }
