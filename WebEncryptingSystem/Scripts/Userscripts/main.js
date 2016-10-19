@@ -49,6 +49,8 @@ angular.module('EncryptApp', ['angularFileUpload'])
               $scope.chars = $scope.spectrumStore.CharsCount;
               $scope.letters = $scope.spectrumStore.LettersCount;
 
+              $scope.spectrum = $scope.spectrumStore.Spectrum;
+
               console.log($scope.spectrumStore.AlphabetTmp);
 
               var ctx = $("#chart");

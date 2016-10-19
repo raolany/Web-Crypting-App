@@ -167,5 +167,42 @@ namespace WebEncryptingSystem.Controllers
             }
             return HttpNotFound();
         }
+
+        public ActionResult RSAFileCrypting(string filename, bool act, int[] key)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = Server.MapPath("~/Files/" + filename);
+                RSAModel rsa = new RSAModel(key);
+                FileModel output = new FileModel();
+
+                //true =  encrypting
+                if (act)
+                {
+                    output = rsa.EncryptFile(path);
+                }
+                else
+                {
+                    output = rsa.DecryptFile(path);
+                }
+
+                var json = JsonConvert.SerializeObject(output); ;
+
+                return Json(json, JsonRequestBehavior.AllowGet);
+            }
+            return HttpNotFound();
+        }
+
+        public ActionResult RSAGenerateSessionKey(int p, int q)
+        {
+            if (ModelState.IsValid)
+            {
+                var key = RSAModel.SessionKeys(p, q);
+                var json = JsonConvert.SerializeObject(key); ;
+
+                return Json(json, JsonRequestBehavior.AllowGet);
+            }
+            return HttpNotFound();
+        }
     }
 }

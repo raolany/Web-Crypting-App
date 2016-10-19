@@ -28,7 +28,7 @@ namespace WebEncryptingSystem.Models
 
         public FileModel CryptFile(string path, bool act)
         {
-            string txt = File.ReadAllText(path).ToUpper().Replace("  ", string.Empty).Trim().Replace("\n", string.Empty).Replace("\t", string.Empty);
+            string txt = File.ReadAllText(path).ToUpper().Replace("\n", string.Empty).Replace("\t", string.Empty);
 
             StringBuilder output = new StringBuilder();
 
@@ -131,7 +131,8 @@ namespace WebEncryptingSystem.Models
             {
                 for (int j = 0; j < vec.Length; j++)
                 {
-                    nvec[i] += vec[j] * matr[j, i];
+                    //nvec[i] += vec[j] * matr[j, i];
+                    nvec[i] += matr[i, j] * vec[j];
                 }
                 nvec[i] = ((nvec[i] % m) + m)%m;
             }

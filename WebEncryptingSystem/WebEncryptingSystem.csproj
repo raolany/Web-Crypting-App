@@ -81,6 +81,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -157,6 +158,7 @@
     <Compile Include="Models\BitModel.cs" />
     <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\HillModel.cs" />
+    <Compile Include="Models\RSAModel.cs" />
     <Compile Include="Models\SpectrumStoreModel.cs" />
     <Compile Include="Models\VigenereModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

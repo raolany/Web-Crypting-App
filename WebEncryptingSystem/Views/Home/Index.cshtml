@@ -17,6 +17,21 @@
                     <p>Letters : {{letters}}</p>
 
                     <canvas id="chart" width="400" height="150"></canvas>
+                    <br/><br />
+                    <table class="table">
+                        <tr>
+                            <td ng-repeat="item in spectrum track by $index">{{$index}}</td>
+                        </tr>
+                        <tr>
+                            <td ng-repeat="item in spectrumStore.AlphabetTmp track by $index">{{item}}</td>
+                        </tr>
+                        <tr>
+                            <td ng-repeat="item in spectrum track by $index">{{item}}</td>
+                        </tr>
+                        <tr>
+                            <td ng-repeat="item in spectrum track by $index">{{(item*100)/letters | number:1}}</td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
